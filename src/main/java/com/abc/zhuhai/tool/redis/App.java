@@ -85,6 +85,27 @@ public class App
         System.out.println("---------------");
     }
     
+    @Test
+    public void testKeys(){
+    	List<String> lst=this.redisCache.keys("f*");
+    	for(String str:lst){
+    		System.out.println(str);
+    	}
+    }
+    
+    @Test
+    public void testEvict(){
+    	redisCache.put("foo", "abc");
+    	ValueWrapper obj=redisCache.get("foo");
+        System.out.println((String)obj.get());
+        List<String> lst=this.redisCache.keys("fo*");
+        this.redisCache.evict(lst);
+        lst=this.redisCache.keys("fo*");
+        for(String str:lst){
+    		System.out.println(str);
+    	}
+    }
+    
     public static void main(String[] args) {  
         
         String s = "<pre class=\"brush: java;\">";  

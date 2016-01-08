@@ -5,6 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -149,7 +152,19 @@ public class RedisCache {
                 return connection.del(keyf.getBytes());  
             }  
         });  
-    }  
+    }
+    
+	public void evict(List<String> keys) {
+		// TODO Auto-generated method stub
+		for (final String keyf : keys) {
+			redisTemplate.execute(new RedisCallback<Long>() {
+				public Long doInRedis(RedisConnection connection)
+						throws DataAccessException {
+					return connection.del(keyf.getBytes());
+				}
+			});
+		}
+	}
   
       
     public void clear() {  
@@ -161,6 +176,23 @@ public class RedisCache {
                 return "ok";  
             }  
         });  
-    }  
+    }
+    
+    public List<String> keys(String str){
+    	final String[] a1={str};
+    	List<String> lst=redisTemplate.execute(new RedisCallback<List<String>>() { 
+            public List<String> doInRedis(RedisConnection connection)  
+                    throws DataAccessException {  
+                Set<byte[]> tt=connection.keys((a1[0]).getBytes()); 
+                List<String> list=new ArrayList<String>();
+                for(byte[] t:tt){
+                	String obj=new String(t);
+                	list.add(obj);
+                }
+                return list;  
+            }  
+        });
+    	return lst;
+    }
   
 } 
