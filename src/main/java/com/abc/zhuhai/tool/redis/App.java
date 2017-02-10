@@ -27,6 +27,9 @@ public class App
 	
 	@Resource
     private RedisTemplate<String, Object> redisTemplate;
+	
+	@Resource(name="redistemplate1")
+    private RedisTemplate<String, String> redisTemplate1;
     /*public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
@@ -104,6 +107,23 @@ public class App
         for(String str:lst){
     		System.out.println(str);
     	}
+    }
+    
+    @Test
+    public void testAbc(){
+    	 redisTemplate.delete("myStr");
+         redisTemplate.opsForValue().set("myStr", "http://yjmyzz.cnblogs.com/");
+         System.out.println(redisTemplate.opsForValue().get("myStr"));
+         System.out.println("---------------");
+    }
+    
+    @Test
+    public void testLoadSet(){
+    	Set<String> setCache = redisTemplate1.opsForSet().members(
+                "ppSet");
+        for (Object s : setCache) {
+            System.out.println(s);
+        }
     }
     
     public static void main(String[] args) {  
