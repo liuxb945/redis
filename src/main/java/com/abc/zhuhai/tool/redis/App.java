@@ -126,6 +126,24 @@ public class App
         }
     }
     
+    @Test
+    public void testDeleteSet(){
+    	redisTemplate1.delete("ppSet");
+    }
+    
+    @Test
+    public void testLoadList(){
+    	// List读写
+//        redisTemplate.delete("myList");
+//        redisTemplate.opsForList().rightPush("myList", "A");
+//        redisTemplate.opsForList().rightPush("myList", "B");
+//        redisTemplate.opsForList().leftPush("myList", "0");
+        List<String> listCache = redisTemplate1.opsForList().range("ppList", 0, -1);
+        for (Object s : listCache) {
+            System.out.println(s);
+        }
+    }
+    
     public static void main(String[] args) {  
         
         String s = "<pre class=\"brush: java;\">";  
